@@ -104,27 +104,9 @@ class JournalApp:
 
         self.db = JournalDatabase()
 
-        # --- Transparent (frosted glass) style ---
-        style = ttk.Style()
-        style.configure("TFrame", background="#FFFFFFCC")         # semi-transparent white
-        style.configure("TLabelframe", background="#FFFFFFCC")    # advice box
-        style.configure("TLabel", background="#FFFFFF")
-
         # Main notebook (tabs)
-        notebook = ttk.Notebook(self.root)
-
-        # --- Center the notebook on the screen ---
-        screen_w = self.root.winfo_screenwidth()
-        screen_h = self.root.winfo_screenheight()
-
-        panel_w = 860
-        panel_h = 560
-
-        center_x = (screen_w - panel_w) // 2
-        center_y = (screen_h - panel_h) // 2
-
-        notebook.place(x=center_x, y=center_y, width=panel_w, height=panel_h)
-
+        notebook = ttk.Notebook(root)
+        notebook.pack(fill="both", expand=True, padx=10, pady=10)
 
         self.entry_frame = ttk.Frame(notebook)
         self.history_frame = ttk.Frame(notebook)
@@ -319,35 +301,8 @@ class JournalApp:
 
 def main():
     root = tk.Tk()
-    root.title("Reflective Journal")
-
-    # Fullscreen window
-    root.attributes('-fullscreen', True)
-
-    # Get real screen size
-    root.update_idletasks()
-    APP_WIDTH = root.winfo_screenwidth()
-    APP_HEIGHT = root.winfo_screenheight()
-
-    # --- Load Background Image ---
-    from PIL import Image, ImageTk
-    bg_image = Image.open("background.png")  # your Canva background
-    bg_image = bg_image.resize((APP_WIDTH, APP_HEIGHT), Image.LANCZOS)
-    bg_photo = ImageTk.PhotoImage(bg_image)
-
-    # --- Create Canvas for Background ---
-    background_canvas = tk.Canvas(root, width=APP_WIDTH, height=APP_HEIGHT,
-                                  highlightthickness=0, bd=0)
-    background_canvas.pack(fill="both", expand=True)
-
-    # --- Draw Background Image ---
-    background_canvas.create_image(0, 0, anchor="nw", image=bg_photo)
-
-    # --- Build UI on top ---
     app = JournalApp(root)
-
     root.mainloop()
-
 
 
 if __name__ == "__main__":
